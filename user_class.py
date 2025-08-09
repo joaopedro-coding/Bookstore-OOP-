@@ -8,10 +8,9 @@ class Reader:
     def can_afford(self, book_price):
         return self.balance >= book_price
     
-    def buy_book(self, book_name, library):
-        book = library.find_book(book_name)
+    def buy_book(self, book):
         if not book:
-            print(f"No book was found with the name {book_name}.")
+            print("Book not found.")
         elif not self.can_afford(book.price):
             print("You don't have enough balance to buy this book.")
         else:

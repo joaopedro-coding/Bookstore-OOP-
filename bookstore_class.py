@@ -12,8 +12,6 @@ class Library:
     def add_book(self, book):
         self.shelf.append(book)
 
-
-
     def remove_book(self, book_title):
         book = self.find_book(book_title)
         if book:

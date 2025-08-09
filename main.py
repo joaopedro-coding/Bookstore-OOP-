@@ -3,7 +3,6 @@ from bookstore_class import Library
 from user_class import Reader
 from books import initial_books
 
-is_booking = True
 is_creating_user = True
 readers = []
 book_store = Library()
@@ -50,20 +49,26 @@ while is_creating_user:
 
     if choice == "1":
         user_name = input("What is your name? ")
-        while True:
-            try:
-                user_balance = float(input("What is your balance? $"))
-                break
-            except ValueError:
-                print("Please enter a valid number.")
-        readers.append(Reader(user_name, user_balance))
+        if find_user(user_name):
+            print("User already exists.")
+        else:
+            while True:
+                try:
+                    user_balance = float(input("What is your balance? $"))
+                    break
+                except ValueError:
+                    print("Please enter a valid number.")
+            readers.append(Reader(user_name, user_balance))
+            print(f"Welcome {user_name} to the Library. Your balance is: ${user_balance}")
 
     elif choice == "2":
         reader = get_existing_user("Which user wants to buy? ")
         if reader:
             book_store.list_books_with_index()
-            book_name = choose_book_by_number(book_store)
-            reader.buy_book(book_name, book_store)
+            book = choose_book_by_number(book_store)
+            reader.buy_book(book, book_store)
+            print(f"{reader} bought {book.name} by ${book.price}")
+            print(f"{reader} balance: ${reader.balance}")
 
     elif choice == "3":
         reader = get_existing_user("Which user wants to display the owned books? ")
@@ -77,7 +82,7 @@ while is_creating_user:
 
     elif choice == "5":
         print("Thanks for using the program!")
-        break
+        is_creating_user = False
 
     else:
         print(f"{choice} is not a valid option.")
