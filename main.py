@@ -24,12 +24,27 @@ def choose_book_by_number(library):
         except ValueError:
             print("Please enter a valid number.")
 
-def get_existing_user(prompt):
-    user_name = input(prompt)
-    reader = find_user(user_name)
+def choose_reader_by_number(reader_lis):
+    while True:
+        try:
+            choice = int(input("Enter the number of the reader you want: "))
+            if 1 <= choice <= len(reader_lis):
+                return reader_lis[choice - 1]
+            else:
+                print(f"Please enter a number between 1 and {len(reader_lis)}.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+def get_existing_user(reader_list):
+    display_readers(reader_list)
+    reader = choose_reader_by_number(reader_list)
     if not reader:
-        print(f"No user found with the name {user_name}.")
+        print(f"No user found with the name {reader.name}.")
     return reader
+
+def display_readers(reader_list):
+    for i, book_reader in enumerate(reader_list, 1):
+        print(f"{i}. {book_reader.name}")
 
 for livro in initial_books:
     new_book = Book(livro["title"], livro["author"], livro["price"])
@@ -59,24 +74,27 @@ while is_creating_user:
                 except ValueError:
                     print("Please enter a valid number.")
             readers.append(Reader(user_name, user_balance))
-            print(f"Welcome {user_name} to the Library. Your balance is: ${user_balance}")
+            print(f"Welcome {user_name} to the Library. Your balance is: ${user_balance:.2f}")
 
     elif choice == "2":
-        reader = get_existing_user("Which user wants to buy? ")
+        reader = get_existing_user(readers)
         if reader:
             book_store.list_books_with_index()
             book = choose_book_by_number(book_store)
-            reader.buy_book(book, book_store)
-            print(f"{reader} bought {book.name} by ${book.price}")
-            print(f"{reader} balance: ${reader.balance}")
+            if book.available:
+                reader.buy_book(book)
+                print(f"{reader.name} bought {book.title} by ${book.price}")
+                print(f"{reader.name} balance: ${reader.balance:.2f}")
+            else:
+                print(f"{book.title} is not available to buy!")
 
     elif choice == "3":
-        reader = get_existing_user("Which user wants to display the owned books? ")
+        reader = get_existing_user(readers)
         if reader:
             reader.list_owned_books()
 
     elif choice == "4":
-        reader = get_existing_user("Which user wants to check the balance? ")
+        reader = get_existing_user(readers)
         if reader:
             reader.show_balance()
 

@@ -17,7 +17,6 @@ class Reader:
             self.owned_books.append(book)
             self.balance -= book.price
             book.available = False
-            print(f"Thanks for buying {book.title}")
 
     def list_owned_books(self):
         if not self.owned_books:
