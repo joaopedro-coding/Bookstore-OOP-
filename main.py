@@ -57,10 +57,12 @@ while is_creating_user:
     print("1. Create user")
     print("2. Buy book")
     print("3. List owned books")
-    print("4. Show balance")
-    print("5. Exit")
+    print("4. Deposit")
+    print("5. Withdraw")
+    print("6. Show balance")
+    print("7. Exit")
 
-    choice = input("Choose an option (1-5): ")
+    choice = input("Choose an option (1-7): ")
 
     if choice == "1":
         user_name = input("What is your name? ")
@@ -81,13 +83,15 @@ while is_creating_user:
         if reader:
             book_store.list_books_with_index()
             book = choose_book_by_number(book_store)
-            if book.available:
+            if not book.available:
+                print("Book is not available.")
+            elif not reader.can_afford(book.price):
+                print("You don't have enough balance to buy this book.")
+            else:
                 reader.buy_book(book)
                 print(f"{reader.name} bought {book.title} by ${book.price}")
                 print(f"{reader.name} balance: ${reader.balance:.2f}")
-            else:
-                print(f"{book.title} is not available to buy!")
-
+                
     elif choice == "3":
         reader = get_existing_user(readers)
         if reader:
@@ -96,9 +100,31 @@ while is_creating_user:
     elif choice == "4":
         reader = get_existing_user(readers)
         if reader:
+            while True:
+                try:
+                    deposit = float(input("How much money do you want to deposit? $"))
+                    reader.deposit(deposit)
+                    break
+                except ValueError:
+                    print("Please insert a valid value.")
+    
+    elif choice == "5":
+        reader = get_existing_user(readers)
+        if reader:
+            while True:
+                try:
+                    withdraw = float(input("How much money do you want to withdraw? $"))
+                    reader.withdraw(withdraw)
+                    break
+                except ValueError:
+                    print("Please insert a valid value.")
+
+    elif choice == "6":
+        reader = get_existing_user(readers)
+        if reader:
             reader.show_balance()
 
-    elif choice == "5":
+    elif choice == "7":
         print("Thanks for using the program!")
         is_creating_user = False
 

@@ -3,9 +3,9 @@ class Library:
     def __init__(self):
         self.shelf = []
 
-    def find_book(self, book_title):
+    def find_book(self, book_reference):
         for book in self.shelf:
-            if book.title.lower().strip() == book_title.lower().strip():
+            if book.title.lower().strip() == book_reference.lower().strip():
                 return book
         return None
 
@@ -24,3 +24,5 @@ class Library:
             print(f"{i}. {book.title.title()} by {book.author.title()}")
             print(f"Price: ${book.price:.2f}")
             print(f"Status: {status}")
+
+    
