@@ -10,11 +10,8 @@ class Library:
         return None
 
     def add_book(self, book):
-        if self.find_book(book.title):
-            print(f"{book.title.title()} is already on the shelf.")
-            return
         self.shelf.append(book)
-        print(f"{book.title.title()} was added to the shelf.")
+
 
 
     def remove_book(self, book_title):
@@ -25,17 +22,18 @@ class Library:
             return
         print(f"No book was found with the name {book_title.title()}")
     
-    def list_books(self):
+    def list_books_with_index(self):
         if not self.shelf:
             print("Your shelf is empty.")
-        else:
-            print("Here are your books!")
-            for book in self.shelf:
-                book_title = book.title.title()
-                book_author = book.author.title()
-                book_availabity = book.available
-                print("*********************************")
-                print(f"{book_title} by {book_author}. Is available: {book_availabity}")
+            return
+
+        print("Here are the books!")
+        for i, book in enumerate(self.shelf, 1):
+            status = "✅ Available" if book.available else "❌ Unavailable"
+            print("*********************************")
+            print(f"{i}. {book.title.title()} by {book.author.title()}")
+            print(f"Price: ${book.price:.2f}")
+            print(f"Status: {status}")
 
     def borrow_book(self, book_title):
         book = self.find_book(book_title)

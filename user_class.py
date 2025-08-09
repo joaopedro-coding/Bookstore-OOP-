@@ -20,8 +20,6 @@ class Reader:
             book.available = False
             print(f"Thanks for buying {book.title}")
 
-
-
     def list_owned_books(self):
         if not self.owned_books:
             print("You don't have any books")
@@ -33,4 +31,6 @@ class Reader:
                 book_price = book.price
                 print("*********************************")
                 print(f"You have {book_title} by {book_author}.\nValue: ${book_price} ")
-        
+
+    def show_balance(self):
+        print(f"User balance: ${self.balance}")        

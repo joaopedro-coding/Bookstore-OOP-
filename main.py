@@ -1,6 +1,7 @@
 from book_class import Book
 from bookstore_class import Library
 from user_class import Reader
+from books import initial_books
 
 is_booking = True
 is_creating_user = True
@@ -13,64 +14,71 @@ def find_user(user_name):
             return reader
     return None
 
-while is_booking:
-    print("\n--- Library Menu ---")
-    print("1. Add a book\n2. Remove a book\n3. List all books\n4. Borrow a book\n5. Return a book\n6. Exit")
-    choice = input("Choose an option (1-6): ")
+def choose_book_by_number(library):
+    while True:
+        try:
+            choice = int(input("Enter the number of the book you want: "))
+            if 1 <= choice <= len(library.shelf):
+                return library.shelf[choice - 1]
+            else:
+                print(f"Please enter a number between 1 and {len(library.shelf)}.")
+        except ValueError:
+            print("Please enter a valid number.")
 
-    if choice == "1":
-        book_name = input("What is the book name? ")
-        book_author = input("What is the book author? ")
-        book_price = float(input("What is the book price? $"))
-        book_to_add = Book(book_name, book_author, book_price)
-        book_store.add_book(book_to_add)
-    elif choice == "2":
-        book_name = input("What is the book name? ")
-        book_store.remove_book(book_name)
-    elif choice == "3":
-         book_store.list_books()
-    elif choice == "4":
-        book_name = input("What book do you want to borrow: ")
-        book_store.borrow_book(book_name)
-    elif choice == "5":
-        book_name = input("What book do you want to return: ")
-        book_store.return_book(book_name)
-    elif choice == "6":
-        is_booking = False
-        print("Thanks for using our bookstore.")
-    else:
-        print(f"{choice} is not a valid option.")
+def get_existing_user(prompt):
+    user_name = input(prompt)
+    reader = find_user(user_name)
+    if not reader:
+        print(f"No user found with the name {user_name}.")
+    return reader
+
+for livro in initial_books:
+    new_book = Book(livro["title"], livro["author"], livro["price"])
+    new_book.available = livro["available"]
+    book_store.add_book(new_book)
+
 
 while is_creating_user:
     print("\n--- User Menu ---")
-    print("1. Create an user\n2. Buy book\n3. List owned books\n4. Exit")
-    user_choice = input("Choose an option (1-2): ")
+    print("1. Create user")
+    print("2. Buy book")
+    print("3. List owned books")
+    print("4. Show balance")
+    print("5. Exit")
 
-    if user_choice == "1":
+    choice = input("Choose an option (1-5): ")
+
+    if choice == "1":
         user_name = input("What is your name? ")
-        user_balance = float(input("What is your balance? $"))
-        user = Reader(user_name, user_balance)
-        readers.append(user)
-    elif user_choice == "2":
-        user_to_buy = input("Wich user wants to buy? ")
-        reader = find_user(user_to_buy)
+        while True:
+            try:
+                user_balance = float(input("What is your balance? $"))
+                break
+            except ValueError:
+                print("Please enter a valid number.")
+        readers.append(Reader(user_name, user_balance))
+
+    elif choice == "2":
+        reader = get_existing_user("Which user wants to buy? ")
         if reader:
-            book_store.list_books()
-            book_name = input("What book do you want to buy? ")
-            if book_store.find_book(book_name):
-                reader.buy_book(book_name, book_store)
-            else:
-                print(f"No book was found with the name {book_name}.")
-        else:
-            print(f"There are no user with the name {user_to_buy}.")
-    elif user_choice == "3":
-        user_to_list = input("Wich user wants to display the owned books? ")
-        reader = find_user(user_to_list)
+            book_store.list_books_with_index()
+            book_name = choose_book_by_number(book_store)
+            reader.buy_book(book_name, book_store)
+
+    elif choice == "3":
+        reader = get_existing_user("Which user wants to display the owned books? ")
         if reader:
             reader.list_owned_books()
-        else:
-            print(f"No user found with the name {user_to_list}")
-    elif user_choice == "4":
-        is_creating_user = False
+
+    elif choice == "4":
+        reader = get_existing_user("Which user wants to check the balance? ")
+        if reader:
+            reader.show_balance()
+
+    elif choice == "5":
+        print("Thanks for using the program!")
+        break
+
     else:
-        print(f"{user_choice} is not a valid option.")
+        print(f"{choice} is not a valid option.")
+
