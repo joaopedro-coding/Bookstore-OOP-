@@ -20,9 +20,10 @@ while is_creating_user:
     print("4. Deposit")
     print("5. Withdraw")
     print("6. Show balance")
-    print("7. Exit")
+    print("7. Return book")
+    print("8. Exit")
 
-    choice = input("Choose an option (1-7): ")
+    choice = input("Choose an option (1-8): ")
 
     if choice == "1":
         user_name = input("What is your name? ")
@@ -85,9 +86,40 @@ while is_creating_user:
             reader.show_balance()
 
     elif choice == "7":
+        reader = book_store.get_existing_user(readers)
+        if reader:
+            reader.show_purchase_history()
+            book = book_store.choose_book_by_number(reader)
+            reader.return_book(book)
+
+    elif choice == "8":
         print("Thanks for using the program!")
         is_creating_user = False
+    
+    elif choice == "set promotion":
+        book_store.list_books_with_index()
+        book = book_store.choose_book_by_number(book_store)
+        if book:
+            while True:
+                try:
+                    discount = int(input("Choose a discount(0-100): "))
+                    book.set_promotion(discount)
+                    break
+                except ValueError:
+                    print("Please choose a valid option")
+        else:
+            print("No book found.")
 
+    elif choice == "remove promotion":
+        book_store.list_books_with_index()
+        book = book_store.choose_book_by_number(book_store)
+        if book:
+            if book.on_sale:
+                book.remove_promotion()
+            else:
+                print("Book is not on sale")
+        else:
+            print("No book found.")
     else:
         print(f"{choice} is not a valid option.")
 
