@@ -11,6 +11,8 @@ This project is a basic command-line shopping cart system built using Python and
 - Calculate the total cost of the cart
 - Empty the cart completely
 - Console-based interaction menu
+- User based system
+- Discount system
 
 ## 🔮 Future Improvements
 
@@ -18,23 +20,18 @@ Below are some planned enhancements to the project:
 
 ### ✅ Feature Ideas
 
-1. **User System**
-   - Create a `User` class with:
-     - Name
-     - Wallet (balance)
-     - List of purchased products
-     - Method to check if the user has enough money to purchase an item
-     - Method to perform a purchase and deduct from wallet
-
-2. **Discount Coupons**
-   - Add support for discount codes that can reduce the total value of the cart
-
-3. **Product Search & Filtering**
+1. **Product Search & Filtering**
    - Search for a product by name or part of its name
    - Filter products by price range or category (if implemented)
 
-4. **Graphical User Interface (GUI)**
+2. **Graphical User Interface (GUI)**
    - Optional: Create a GUI using `Tkinter` or `PyQt` for a more user-friendly experience
+
+3. **Implement rating**
+   - Create a system to let the user rate the books he read.
+
+4. **Let a user borrow a book to another user**
+   - Create a system that let's an user borrow a book to the other. And a due date to return or else a tax will be deducted from the borrower.
 
 ---
 
